@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class UIController : MonoBehaviour
 {
 
-    public StartGame userNameToTransfer;
+    [HideInInspector] public StartGame userNameToTransfer;
     GameObject objToFind;
 
     Text bulletStatsTextBox;

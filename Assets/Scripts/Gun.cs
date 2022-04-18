@@ -13,6 +13,8 @@ public class Gun : MonoBehaviour
 
     public Camera fpsCam;
     public GameObject bullet;
+    GameObject bulletsHolder;
+    public static GameObject go;
 
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
@@ -21,11 +23,17 @@ public class Gun : MonoBehaviour
 
     int magzine = 60;
 
-    List<GameObject> bulletsList = new List<GameObject>();
+    
     List<GameObject> flareEffectList = new List<GameObject>();
 
     public static event MyDlegates.PlayGunSoundsDelegate PlayGunShotEvent;
     public static event MyDlegates.UIDelegate UIEvent;
+    public static event MyDlegates.BulletHandlerDelegate BulletEvent;
+
+    private void Start()
+    {
+        bulletsHolder = GameObject.Find("BulletsHolder");
+    }
 
     // Update is called once per frame
     void Update()
@@ -63,27 +71,16 @@ public class Gun : MonoBehaviour
             {
                 PlayGunShotEvent?.Invoke();
 
-                //GameObject gameObjectDeleteBullet = Instantiate(bullet, transform.position, transform.rotation);
-                bulletsList.Add(Instantiate(bullet, transform.position, transform.rotation));
+                /*GameObject gameObjectDeleteBullet = Instantiate(bullet, transform.position, transform.rotation);
+                Destroy(gameObjectDeleteBullet, 2f);*/
+
+                BulletEvent?.Invoke();
+                
                 muzzleFlash.Play();
                 magzine--;
-                //Debug.Log(bulletsList.Count);
+              
+                //go.transform.SetParent(bulletsHolder.transform);
 
-                
-                foreach (GameObject bullet in bulletsList)
-                {
-                    Destroy(bullet, 2f);
-                }
-
-                StartCoroutine(ClearBulletList());
-                IEnumerator ClearBulletList()
-                {
-                    yield return new WaitForSeconds(2f);
-                    bulletsList.Clear();        
-                }
-                //Debug.Log("After Clear: " + bulletsList.Count);
-
-                //Debug.Log(hit.point);
                 BulletMoveForward.hitPosition = hit.point;
 
                 if (target != null)

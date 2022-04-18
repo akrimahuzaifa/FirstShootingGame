@@ -5,18 +5,26 @@ using UnityEngine;
 public class BulletMoveForward : MonoBehaviour
 {
     public float bulletSpeed = 20f;
-
     public static Vector3 hitPosition;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    
+ 
     void Update()
     {  
         transform.position = Vector3.MoveTowards(transform.position, hitPosition, bulletSpeed * Time.deltaTime);
-       // transform.Translate(Vector3.forward * 10f * Time.deltaTime);
+        // transform.Translate(Vector3.forward * 10f * Time.deltaTime);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.CompareTag("Bullet"))
+        {
+            Debug.Log("hitting bullet");
+            Destroy(collision.collider.gameObject);
+        }
+        Debug.Log("BulletHolder: " + BulletInstantiator.bulletsList.Count);
+        foreach(GameObject go in BulletInstantiator.bulletsList)
+        {
+            Destroy(go);
+        }
+        BulletInstantiator.bulletsList.Clear();
     }
 }

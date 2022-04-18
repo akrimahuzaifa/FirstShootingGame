@@ -1,25 +1,38 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
-    public float health = 50;
+    public float maxHealth = 100f;
+    public float currentHealth;
     public GameObject DamageText;
-    private void OnEnable()
+
+    HealthBar healthBar;
+
+    public event Action<float> OnHealthPctChanged = delegate { };
+
+    private void Start()
     {
-        //CollisionController.CollisionEvent += TakeDamage;
+        healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float damage)
     {
         DamageText.GetComponent<Text>().rectTransform.localPosition = gameObject.transform.position;
+        DamageText.GetComponent<Text>().color = currentHealth > 30 ? Color.blue : Color.red;
 
-        DamageText.GetComponent<Text>().color = health > 30 ? Color.blue : Color.red;
+        currentHealth -= damage;
+      
+        healthBar.SetHealth(currentHealth);
 
-        health -= amount;
+/*        float currentHealthPct = (float)currentHealth / (float)maxHealth;
+        OnHealthPctChanged(currentHealthPct);*/
 
-        DamageText.GetComponent<Text>().text = health > 0 ? health.ToString():"";
-        if (health <= 0)
+        DamageText.GetComponent<Text>().text = currentHealth > 0 ? currentHealth.ToString() : "";
+        if (currentHealth <= 0)
         {
             Die();
         }
