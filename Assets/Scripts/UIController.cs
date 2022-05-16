@@ -93,7 +93,7 @@ public class UIController : MonoBehaviour
 
     void HoursMinutesSecondsLeft(int hours, int minutes, float seconds)
     {
-        timerTextBox.text = hours + " : " + minutes + " : " + seconds.ToString("F2");
+        timerTextBox.text = hours.ToString("D2") + " : " + minutes.ToString("D2") + " : " + seconds.ToString("F2");
     }
 
     void CountDownTimer(int timeToStartFrom)
