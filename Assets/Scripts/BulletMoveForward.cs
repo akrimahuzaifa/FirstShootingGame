@@ -17,13 +17,13 @@ public class BulletMoveForward : MonoBehaviour
     {
         if (collision.collider.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("hitting bullet");
+            //Debug.Log("hitting bullet");
             Destroy(collision.collider.gameObject);
         }
-        Debug.Log("BulletHolder: " + BulletInstantiator.bulletsList.Count);
+        //Debug.Log("BulletHolder: " + BulletInstantiator.bulletsList.Count);
         foreach(GameObject go in BulletInstantiator.bulletsList)
         {
-            Destroy(go);
+            Destroy(go, 2f);
         }
         BulletInstantiator.bulletsList.Clear();
     }
