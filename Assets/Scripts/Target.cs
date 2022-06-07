@@ -14,9 +14,11 @@ public class Target : MonoBehaviour
 
     private void Start()
     {
-        healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+
+            healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
+            
+            currentHealth = maxHealth;
+            healthBar.SetMaxHealth(maxHealth);
     }
 
     public void TakeDamage(float damage)

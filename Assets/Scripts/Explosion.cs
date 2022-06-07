@@ -4,40 +4,48 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    GameObject gasTankWhite;
     GameObject cylinder;
     [SerializeField] ParticleSystem bigExplosion;
-    [SerializeField] ParticleSystem energyExplosion;
+    public AudioClip explosionAudio;
+    AudioSource audioSource;
+    ParticleSystem particle;
+    int bulletCounterForExplosion = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         cylinder = GameObject.Find("Environment/Cylinders");
-        gasTankWhite = GameObject.Find("Environment/Cylinders/Gas Tank Black");
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = explosionAudio;
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.tag == "Bullet")
         {
-            //Debug.Log("Collission");
-            var particle = Instantiate(bigExplosion);
-            particle.gameObject.transform.SetParent(cylinder.transform);
-            particle.gameObject.transform.position = gasTankWhite.transform.position;
-            particle.Play();
+            bulletCounterForExplosion++;
+            if(bulletCounterForExplosion > 2)
+            {
+                //Debug.Log("Collission");
+                particle = Instantiate(bigExplosion);
+                particle.gameObject.transform.SetParent(cylinder.transform);
+                particle.gameObject.transform.position = transform.position;
+                particle.Play();
 
-            var particle2 = Instantiate(energyExplosion);
-            particle2.gameObject.transform.SetParent(cylinder.transform);
-            particle2.gameObject.transform.position = gasTankWhite.transform.position;
-            particle2.Play();
-            StartCoroutine(DestroyCylinder());
-            Destroy(gameObject);
+                audioSource.Play();
 
+                gameObject.transform.position = new Vector3(1000f, 1000f, 1000f);
+
+                StartCoroutine(DestroyCylinder());
+            }
         }
     }
     IEnumerator DestroyCylinder()
     {
         yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+        Destroy(particle.gameObject, 2f);
     }
 
     // Update is called once per frame

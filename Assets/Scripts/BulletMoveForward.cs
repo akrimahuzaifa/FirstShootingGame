@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletMoveForward : MonoBehaviour
 {
-    public float bulletSpeed = 20f;
+    public float bulletSpeed = 100f;
     public static Vector3 hitPosition;
     
  
@@ -23,7 +23,7 @@ public class BulletMoveForward : MonoBehaviour
         //Debug.Log("BulletHolder: " + BulletInstantiator.bulletsList.Count);
         foreach(GameObject go in BulletInstantiator.bulletsList)
         {
-            Destroy(go, 2f);
+            Destroy(go);
         }
         BulletInstantiator.bulletsList.Clear();
     }

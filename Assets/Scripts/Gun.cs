@@ -23,7 +23,7 @@ public class Gun : MonoBehaviour
 
     int magzine = 60;
 
-    
+
     List<GameObject> flareEffectList = new List<GameObject>();
 
     public static event MyDlegates.PlayGunSoundsDelegate PlayGunShotEvent;
@@ -42,6 +42,7 @@ public class Gun : MonoBehaviour
         {
             nextTimeToFire = Time.time * 1f / fireRate;
             Shoot();
+            //ShootInAir();
             //Debug.Log("Holding button down");
         }
 
@@ -60,7 +61,7 @@ public class Gun : MonoBehaviour
     void Shoot()
     {
         RaycastHit hit;
-        if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             //Debug.DrawRay(Camera.main.transform.position, hit.point, Color.red);
             //Debug.Log(hit.transform.name);
@@ -75,10 +76,10 @@ public class Gun : MonoBehaviour
                 Destroy(gameObjectDeleteBullet, 2f);*/
 
                 BulletEvent?.Invoke();
-                
+
                 muzzleFlash.Play();
                 magzine--;
-              
+
                 //go.transform.SetParent(bulletsHolder.transform);
 
                 BulletMoveForward.hitPosition = hit.point;
@@ -103,6 +104,17 @@ public class Gun : MonoBehaviour
                 //Destroy(gameObjectDeleteEffect, 2f);
                 //==============FlareEffect==============================
             }
+        }
+    }
+
+    void ShootInAir()
+    {
+        if (magzine > 0)
+        {
+            PlayGunShotEvent?.Invoke();
+            BulletEvent?.Invoke();
+            muzzleFlash.Play();
+            magzine--;
         }
     }
 }
